@@ -23,19 +23,35 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    sexo: {
+    cnpj: {
         type: String,
-        required: true
+        unique: true
+    },
+    filiacaoUSP: {
+        type: Boolean,
     },
     curso: {
         type: String,
-        required: true
     },
     campus:{
         type: String,
+    },
+    motivo: {
+        type: String,
+        required: true
+    },
+    plus:{
+        type: Boolean,
         required: true
     }
+
 });
+
+UserSchema.virtual('stores', {
+    ref:'Store',
+    localField: 'usuario',
+    foreignField: '_id'
+})
 
 UserSchema.pre('save', async function(next){
     const user = this;

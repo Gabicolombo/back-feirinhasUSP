@@ -3,6 +3,7 @@ const bodyparser = require('body-parser');
 
 // rotas
 const routerUser = require('../src/routes/user');
+const routerStore = require('../src/routes/store');
 
 // conectando
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(bodyparser.json());
 // configurando as rotas utilizadas
 app.use(routerUser);
+app.use(routerStore)
 
 // conectando com o mongodb
 db();
