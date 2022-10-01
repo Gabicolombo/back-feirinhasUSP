@@ -25,7 +25,8 @@ const UserSchema = new mongoose.Schema({
     },
     cnpj: {
         type: String,
-        unique: true
+        index: false,
+        required: false
     },
     filiacaoUSP: {
         type: Boolean,

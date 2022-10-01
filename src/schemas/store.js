@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const StoreSchema = new mongoose.Schema({
     nome: {
         type: String,
-        unique: true,
+        index: false,
         required: true
     },
     usuario: {

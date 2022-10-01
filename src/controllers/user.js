@@ -29,9 +29,9 @@ const login = async(req, res, next) => {
 const register = async(req, res, next) => {
     try{
 
-        const {email} = req.body;
+        const {email, cpf} = req.body;
 
-        if(await User.findOne({email: email})) return res.status(200).json({message: 'Esse email já está cadastrado'});
+        if(await User.findOne({email: email}) || await User.findOne({cpf: cpf}) ) return res.status(200).json({message: 'Esse usuário já está cadastrado'});
 
         await User.create(req.body);
 
