@@ -1,5 +1,6 @@
 const User = require('../schemas/user');
 const bcryptjs = require('bcryptjs');
+const auth = require('../middleware/auth');
 
 async function comparePassword(input, password){
     return await bcryptjs.compare(input, password);
@@ -7,7 +8,8 @@ async function comparePassword(input, password){
 
 const login = async(req, res, next) => {
     try{
-
+        console.log('login');
+        console.log(req.body);
         const {email, senha} = req.body;
 
         const user = await User.findOne({email: email}).select('+senha');
@@ -18,7 +20,10 @@ const login = async(req, res, next) => {
 
         if(!result) return res.status(400).json({message: 'Senha incorreta'});
 
-        res.status(200).send(user);
+        const token = await user.generateAuthToken();
+      
+
+        res.status(200).json({user, token});
 
     }catch(err){
         console.error(err);

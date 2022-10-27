@@ -1,18 +1,16 @@
 const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
-    nome: {
+    nomeProduto: {
         type: String,
         required: true,
-        unique: true
     },
     descricao: {
         type: String, 
         required: true
     },
     foto:{
-        type: String,
-        required: true
+        type: String, 
     },
     quantidade: {
         type: Number,
@@ -28,13 +26,17 @@ const ProductSchema = new mongoose.Schema({
     categoria:{
         type: String,
         required: true
+    },
+    usuario: {
+        type: mongoose.Schema.Types.String,
+        required: true
     }
 });
 
 ProductSchema.virtual('stores', {
     ref:'Store',
     localField: 'lista_produtos',
-    foreignField: '_id'
+    foreignField: 'nome'
 })
 
 ProductSchema.pre('save', async function(next){

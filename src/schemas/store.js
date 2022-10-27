@@ -21,14 +21,14 @@ const StoreSchema = new mongoose.Schema({
         required: true
     },
     lista_produtos: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Object,
         ref: 'Produtos'
     }],
     horario:{
         type: String
     },
     itens_mais_vendidos: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: 'Produtos'
     }],
     pontuacao: {

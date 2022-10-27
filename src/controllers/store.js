@@ -5,9 +5,9 @@ const { ObjectId } = require('mongodb');
 
 const register = async (req, res, next) => {
     try {
-        console.log(req.body);
-        // const {usuario} = req.body;
-
+        
+        req.body.usuario = req.user;
+        
         const ObjectID = require('mongodb').ObjectId;
 
         if (!await User.findOne({ _id: req.body.usuario })) return res.status(400).json({ message: 'Usuário não existente' });
@@ -67,12 +67,12 @@ const getAll = async (req, res, next) => {
 const getStore = async (req, res, next) => {
     try {
 
-        const id_usuario = req.params.id;
+        const _id = req.params.id;
 
         const store = await Store.aggregate([
             {
                 $match: {
-                    usuario: new ObjectId(`${id_usuario}`)
+                    _id: new ObjectId(`${_id}`)
                 }
             },
             {
@@ -112,7 +112,7 @@ const getStore = async (req, res, next) => {
 const updateStore = async (req, res, next) => {
     try {
 
-        const id_usuario = req.params.id;
+        const id_usuario = req.user._id;
 
         const store = await Store.findOne({ usuario: id_usuario });
 
