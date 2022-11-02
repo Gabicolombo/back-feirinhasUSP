@@ -30,7 +30,8 @@ const ProductSchema = new mongoose.Schema({
     usuario: {
         type: mongoose.Schema.Types.String,
         required: true
-    }
+    },
+    
 });
 
 ProductSchema.virtual('stores', {

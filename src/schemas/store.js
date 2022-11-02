@@ -27,6 +27,10 @@ const StoreSchema = new mongoose.Schema({
     horario:{
         type: String
     },
+    categoria:{
+        type: String,
+        required: true
+    },
     itens_mais_vendidos: [{
         type: mongoose.Schema.Types.String,
         ref: 'Produtos'

@@ -51,7 +51,7 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     favoritos:[{
-        type: mongoose.Types.ObjectId
+        type: mongoose.Schema.Types.Object
     }],
     tokens:[{
         token:{
