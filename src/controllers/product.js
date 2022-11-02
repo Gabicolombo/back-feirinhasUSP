@@ -112,14 +112,49 @@ const getProducts = async(req, res, next) => {
     }
 }
 
+const getProduct = async(req, res, next)=> {
+    try{
+
+        const idProduct = req.params.id;
+        //await Product.findById({_id: idProduct});
+        const product = await Product.aggregate([
+            {
+                $match: {
+                    _id: new ObjectId(`${idProduct}`)
+                }
+            },
+            {
+                $project:{
+                    _id: 0,
+                    nomeProduto: 1,
+                    descricao: 1,
+                    quantidade: 1,
+                    preco: 1,
+                    categoria: 1,
+                    usuario: 1,
+                    status: 1
+                }
+            }
+        ]).allowDiskUse(true);
+
+        if(product.length == 0) return res.status(404).json({message: 'Produto não encontrado'});
+
+        return res.status(200).json(product);
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 const favoriteProduct = async(req, res, next)=>{
     try{
-        console.log(req.params)
+     
         const id = req.params.id;
 
         const product = await Product.findById({_id: id});
 
-        if(!product) return res.status(400).send('Produto não encontrado')
+        if(!product) return res.status(400).send('Produto não encontrado');
 
         await User.updateOne(
             {email: req.user.email},
@@ -138,5 +173,6 @@ module.exports = {
     updateProduct,
     deleteProduct,
     getProducts,
+    getProduct,
     favoriteProduct
 }
