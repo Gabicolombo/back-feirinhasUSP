@@ -1,5 +1,6 @@
 const Product = require('../schemas/product');
 const Store = require('../schemas/store');
+const User = require('../schemas/user');
 const { ObjectId } = require('mongodb');
 
 const registerProduct = async(req, res, next) => {
@@ -95,8 +96,11 @@ const deleteProduct = async(req, res, next) => {
 // pegar o produto de acordo com os filtros, fazer paginação
 const getProducts = async(req, res, next) => {
     try{
-
-        const products = await Product.find({});
+        
+        const category = req.query.categoria;
+        let products = []
+        if(category == 'Tudo') products = await Product.find({});
+        else products = await Product.find({categoria: category});
 
         if(!products) return res.status(404).json({message: 'Nenhum produto encontrado'});
 
@@ -108,9 +112,31 @@ const getProducts = async(req, res, next) => {
     }
 }
 
+const favoriteProduct = async(req, res, next)=>{
+    try{
+        console.log(req.params)
+        const id = req.params.id;
+
+        const product = await Product.findById({_id: id});
+
+        if(!product) return res.status(400).send('Produto não encontrado')
+
+        await User.updateOne(
+            {email: req.user.email},
+            {$push: {favoritos: product}});
+
+        return res.status(200).json({message: 'atualizado'});
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 module.exports = {
     registerProduct,
     updateProduct,
     deleteProduct,
-    getProducts
+    getProducts,
+    favoriteProduct
 }
