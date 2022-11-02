@@ -29,7 +29,7 @@ const register = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
     try {
-
+        
         const stores = await Store.aggregate([
             {
                 $lookup: {
@@ -47,8 +47,8 @@ const getAll = async (req, res, next) => {
                     },
                     descricao: 1,
                     localizacao: 1,
-                    lista_produtos: 1,
-                    itens_mais_vendidos: 1,
+                    // lista_produtos: 1,
+                    // itens_mais_vendidos: 1,
                     horario: 1
                 }
             }
@@ -56,7 +56,7 @@ const getAll = async (req, res, next) => {
 
         if (!stores) res.status(404).json({ message: 'Não há nenhuma loja cadastrada' });
 
-        res.status(200).json({ data: stores });
+        res.status(200).json(stores);
 
     } catch (err) {
         console.error(err);
@@ -101,7 +101,7 @@ const getStore = async (req, res, next) => {
 
         if (!store) return res.status(404).json({ message: 'Loja não existente' });
 
-        res.status(200).json({ data: store });
+        res.status(200).json(store);
 
     } catch (err) {
         console.error(err);
