@@ -7,7 +7,8 @@ const routes = express.Router();
 const baseUrl = '/product';
 
 routes.get(`${baseUrl}/`, controller.getProducts);
-routes.post(`${baseUrl}/register`, auth, controller.registerProduct);
+routes.post(`${baseUrl}/register`,  controller.registerProduct);
+routes.post(`${baseUrl}/favorite/:id`, auth, controller.favoriteProduct);
 routes.put(`${baseUrl}/:id`, auth, controller.updateProduct);
 routes.delete(`${baseUrl}/:id`, auth, controller.deleteProduct);
 
