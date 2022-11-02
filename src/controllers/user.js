@@ -48,7 +48,24 @@ const register = async(req, res, next) => {
     }
 }
 
+const getFavorites = async(req, res, next) => {
+    try{
+
+        const products = await User.find({email: req.user.email});
+
+        if(!products) return res.status(404).json({message: 'Não há nenhum produto favorito'});
+
+        return res.status(200).json(products);
+        
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getFavorites
 }
