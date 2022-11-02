@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('../config/off.json');
 
 const UserSchema = new mongoose.Schema({
     nome: {
@@ -18,24 +20,61 @@ const UserSchema = new mongoose.Schema({
         select: false,
         required: true
     },
+    telefone: {
+        type: Number
+    },
     cpf: {
         type: String,
         unique: true,
         required: true
     },
-    sexo: {
+    cnpj: {
         type: String,
-        required: true
+        index: false,
+        required: false
+    },
+    filiacaoUSP: {
+        type: Boolean,
     },
     curso: {
         type: String,
-        required: true
     },
     campus:{
         type: String,
+    },
+    motivo: {
+        type: String,
         required: true
-    }
+    },
+    plus:{
+        type: Boolean,
+        required: true
+    },
+    favoritos:[{
+        type: mongoose.Schema.Types.Object
+    }],
+    tokens:[{
+        token:{
+            type:String,
+            required:true
+        }
+    }]
+
 });
+
+UserSchema.virtual('stores', {
+    ref:'Store',
+    localField: 'usuario',
+    foreignField: '_id'
+});
+
+UserSchema.methods.generateAuthToken = async function(){
+    const user = this
+    const token = jwt.sign({_id:user.id.toString()}, config.secret)
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+    return token
+}
 
 UserSchema.pre('save', async function(next){
     const user = this;

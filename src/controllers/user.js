@@ -1,5 +1,6 @@
 const User = require('../schemas/user');
 const bcryptjs = require('bcryptjs');
+const auth = require('../middleware/auth');
 
 async function comparePassword(input, password){
     return await bcryptjs.compare(input, password);
@@ -7,7 +8,8 @@ async function comparePassword(input, password){
 
 const login = async(req, res, next) => {
     try{
-
+        console.log('login');
+        console.log(req.body);
         const {email, senha} = req.body;
 
         const user = await User.findOne({email: email}).select('+senha');
@@ -18,7 +20,10 @@ const login = async(req, res, next) => {
 
         if(!result) return res.status(400).json({message: 'Senha incorreta'});
 
-        res.status(200).send(user);
+        const token = await user.generateAuthToken();
+      
+
+        res.status(200).json({user, token});
 
     }catch(err){
         console.error(err);
@@ -29,9 +34,9 @@ const login = async(req, res, next) => {
 const register = async(req, res, next) => {
     try{
 
-        const {email} = req.body;
+        const {email, cpf} = req.body;
 
-        if(await User.findOne({email: email})) return res.status(200).json({message: 'Esse email já está cadastrado'});
+        if(await User.findOne({email: email}) || await User.findOne({cpf: cpf}) ) return res.status(200).json({message: 'Esse usuário já está cadastrado'});
 
         await User.create(req.body);
 
@@ -43,7 +48,24 @@ const register = async(req, res, next) => {
     }
 }
 
+const getFavorites = async(req, res, next) => {
+    try{
+
+        const products = await User.find({email: req.user.email});
+
+        if(!products) return res.status(404).json({message: 'Não há nenhum produto favorito'});
+
+        return res.status(200).json(products);
+        
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getFavorites
 }
