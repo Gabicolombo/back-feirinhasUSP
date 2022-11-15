@@ -5,13 +5,13 @@ const { ObjectId } = require('mongodb');
 
 const registerProduct = async(req, res, next) => {
     try{
-        console.log(req.body);
+        
         const { _id } = req.user._id;
         const {nomeProduto} = req.body;
-
+     
         let productList = await Store.aggregate([
             {
-                $match: {usuario: _id}
+                $match: {usuario: new ObjectId(`${_id}`)}
             },
             {
                 $lookup:{
@@ -28,10 +28,14 @@ const registerProduct = async(req, res, next) => {
                 }
             }
         ]).allowDiskUse(true);
-
-        productList[0].produtos.forEach(e => {
-            if(e.nomeProduto === nomeProduto) return res.status(400).json({message: 'Esse produto já existe na loja'});
-        })
+        
+        if(productList.length === 0) return res.status(404).json({message: 'Precisa cadastrar a loja primeiro'});
+        if(productList.length > 0){
+            productList[0].produtos.forEach(e => {
+                if(e.nomeProduto === nomeProduto) return res.status(400).json({message: 'Esse produto já existe na loja'});
+            })
+        }
+        
         req.body.usuario = req.user.nome;
         await Product.create(req.body);
         
