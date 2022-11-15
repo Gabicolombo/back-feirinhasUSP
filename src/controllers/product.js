@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb');
 
 const registerProduct = async(req, res, next) => {
     try{
-
+        console.log(req.body);
         const { _id } = req.user._id;
         const {nomeProduto} = req.body;
 

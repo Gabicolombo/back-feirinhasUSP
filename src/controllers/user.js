@@ -8,7 +8,7 @@ async function comparePassword(input, password){
 
 const login = async(req, res, next) => {
     try{
-        
+
         const {email, senha} = req.body;
 
         const user = await User.findOne({email: email}).select('+senha');
@@ -50,20 +50,20 @@ const register = async(req, res, next) => {
 const getFavorites = async(req, res, next) => {
     try{
         //await User.find({email: req.user.email});
+        
         const products = await User.aggregate([
             {
                 $match: {email: req.user.email}
             },
             {
                 $project:{
-                    nome: 1,
                     favoritos: 1,
                     _id: 0
                 }
             }
         ]).allowDiskUse(true);
 
-        if(!products) return res.status(404).json({message: 'Não há nenhum produto favorito'});
+        if(products.length === 0) return res.status(404).json({message: 'Não há nenhum produto favorito'});
 
         return res.status(200).json(products);
         

@@ -8,7 +8,7 @@ const baseUrl = '/store';
 
 routes.post(`${baseUrl}/register`, auth, controller.register);
 routes.get(`${baseUrl}/:id`, controller.getStore);
-routes.get(`${baseUrl}/`, controller.getAll);
+routes.get(`${baseUrl}/`, auth, controller.getAll);
 routes.put(`${baseUrl}/`, auth, controller.updateStore);
 
 module.exports = routes;

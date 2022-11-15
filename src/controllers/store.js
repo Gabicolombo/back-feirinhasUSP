@@ -92,8 +92,9 @@ const getStore = async (req, res, next) => {
                     descricao: 1,
                     localizacao: 1,
                     lista_produtos: 1,
-                    itens_mais_vendidos: 1,
-                    horario: 1
+                    // itens_mais_vendidos: 1,
+                    horario: 1,
+                    pontuacao:1
                 }
             }
 
