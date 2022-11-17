@@ -151,32 +151,10 @@ const getProduct = async(req, res, next)=> {
     }
 }
 
-const favoriteProduct = async(req, res, next)=>{
-    try{
-     
-        const id = req.params.id;
-
-        const product = await Product.findById({_id: id});
-
-        if(!product) return res.status(400).send('Produto não encontrado');
-
-        await User.updateOne(
-            {email: req.user.email},
-            {$push: {favoritos: product}});
-
-        return res.status(200).json({message: 'atualizado'});
-
-    }catch(err){
-        console.error(err);
-        next();
-    }
-}
-
 module.exports = {
     registerProduct,
     updateProduct,
     deleteProduct,
     getProducts,
     getProduct,
-    favoriteProduct
 }

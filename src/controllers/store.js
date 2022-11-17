@@ -133,9 +133,31 @@ const updateStore = async (req, res, next) => {
     }
 }
 
+const favoriteStore = async(req, res, next)=>{
+    try{
+     
+        const id = req.params.id;
+
+        const store = await Store.findById({_id: id});
+
+        if(!store) return res.status(400).send('Loja não encontrado');
+
+        await User.updateOne(
+            {email: req.user.email},
+            {$push: {favoritos: store}});
+
+        return res.status(200).json({message: 'Atualizado'});
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 module.exports = {
     register,
     getAll,
     getStore,
-    updateStore
+    updateStore,
+    favoriteStore
 }

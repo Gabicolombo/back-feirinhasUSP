@@ -7,7 +7,6 @@ const routes = express.Router();
 const baseUrl = '/product';
 
 routes.post(`${baseUrl}/register`, auth, controller.registerProduct);
-routes.post(`${baseUrl}/favorite/:id`, auth, controller.favoriteProduct);
 routes.get(`${baseUrl}/`, auth, controller.getProducts);
 routes.get(`${baseUrl}/:id`, auth, controller.getProduct);
 routes.put(`${baseUrl}/:id`, auth, controller.updateProduct);
