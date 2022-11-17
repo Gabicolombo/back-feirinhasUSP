@@ -64,8 +64,8 @@ const getFavorites = async(req, res, next) => {
         ]).allowDiskUse(true);
 
         if(products.length === 0) return res.status(404).json({message: 'Não há nenhum produto favorito'});
-
-        return res.status(200).json(products);
+        
+        return res.status(200).json(products[0].favoritos);
         
 
     }catch(err){
