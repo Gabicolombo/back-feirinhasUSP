@@ -110,6 +110,24 @@ const getStore = async (req, res, next) => {
     }
 }
 
+const getStores = async(req, res, next) => {
+    try{
+        
+        const category = req.query.categoria;
+        let stores = []
+        if(category == 'Tudo') stores = await Store.find({});
+        else stores = await Store.find({categoria: category});
+
+        if(!stores) return res.status(404).json({message: 'Nenhum produto encontrado'});
+
+        return res.status(200).json(stores);
+
+    }catch(err){
+        console.error(err);
+        next();
+    }
+}
+
 const updateStore = async (req, res, next) => {
     try {
 
@@ -159,5 +177,6 @@ module.exports = {
     getAll,
     getStore,
     updateStore,
-    favoriteStore
+    favoriteStore,
+    getStores
 }
