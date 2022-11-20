@@ -95,12 +95,12 @@ const getStore = async (req, res, next) => {
                     lista_produtos: 1,
                     // itens_mais_vendidos: 1,
                     horario: 1,
-                    pontuacao:1
+                    pontuacao:1,
+                    telefone:1
                 }
             }
 
         ]).allowDiskUse(true);
-        console.log('store',store.lista_produtos);
         if (!store) return res.status(404).json({ message: 'Loja não existente' });
 
         res.status(200).json(store);
