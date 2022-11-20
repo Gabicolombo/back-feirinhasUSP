@@ -89,6 +89,7 @@ const getStore = async (req, res, next) => {
                     usuario: {
                         $arrayElemAt: ["$usuario_nome.nome", 0]
                     },
+                    usuario_id: '$usuario',
                     descricao: 1,
                     localizacao: 1,
                     lista_produtos: 1,
