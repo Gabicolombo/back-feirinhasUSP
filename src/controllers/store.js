@@ -86,9 +86,10 @@ const getStore = async (req, res, next) => {
             {
                 $project: {
                     nome: 1,
-                    usuario: {
+                    usuario_nome: {
                         $arrayElemAt: ["$usuario_nome.nome", 0]
                     },
+                    usuario_id: 1,
                     descricao: 1,
                     localizacao: 1,
                     lista_produtos: 1,
@@ -99,7 +100,7 @@ const getStore = async (req, res, next) => {
             }
 
         ]).allowDiskUse(true);
-
+        console.log('store',store.lista_produtos);
         if (!store) return res.status(404).json({ message: 'Loja não existente' });
 
         res.status(200).json(store);
