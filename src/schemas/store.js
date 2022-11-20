@@ -40,6 +40,9 @@ const StoreSchema = new mongoose.Schema({
     },
     foto: {
         type: String
+    },
+    telefone: {
+        type: Number
     }
 });
 
