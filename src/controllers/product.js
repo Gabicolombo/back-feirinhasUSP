@@ -24,7 +24,6 @@ const registerProduct = async(req, res, next) => {
             {
                 $project: {
                     produtos: 1,
-                    _id: 0
                 }
             }
         ]).allowDiskUse(true);

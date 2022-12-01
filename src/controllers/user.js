@@ -58,7 +58,6 @@ const getFavorites = async(req, res, next) => {
             {
                 $project:{
                     favoritos: 1,
-                    _id: 0
                 }
             }
         ]).allowDiskUse(true);
