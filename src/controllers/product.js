@@ -128,7 +128,7 @@ const getProduct = async(req, res, next)=> {
             },
             {
                 $project:{
-                    _id: 0,
+                    _id: 1,
                     nomeProduto: 1,
                     descricao: 1,
                     quantidade: 1,
